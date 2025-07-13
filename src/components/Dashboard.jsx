@@ -4,6 +4,7 @@ import axios from "axios";
 import Food from './Food';
 
 
+
 export default function Dashboard() {
     const [email, setEmail] = useState("");
     const navigate = useNavigate();
@@ -70,6 +71,7 @@ export default function Dashboard() {
                 <h2 className="text-3xl font-bold text-purple-700 mb-4">Welcome to Dashboard</h2>
                 <p className="text-gray-700 text-lg mb-6">You are logged in as <span className="font-semibold text-blue-600">{email || "Loading..."}</span></p>
                 <Food />
+
 
 
 
