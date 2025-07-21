@@ -7,15 +7,16 @@ import Dashboard from './components/Dashboard';
 import Food from './components/Food';
 import Cuisine from './components/Cuisine';
 import Foods from './components/Foods';
+import FoodMenu from './components/FoodMenu';
 import { ToastContainer, toast } from 'react-toastify';
 
 function App() {
-  const notify = () => toast("Wow so easy!");
+  // const notify = () => toast("Wow so easy!");
 
   return (
 
     <>
-      <button onClick={notify}>ssss</button>
+      {/* <button onClick={notify}>ssss</button> */}
       <Routes>
         <Route path="/" element={<Registered />} />
         <Route path="/login" element={<Login />} />
@@ -23,6 +24,14 @@ function App() {
         <Route path="/add-food" element={<Food />} />
         <Route path="/add-cuisine" element={<Cuisine />} />
         <Route path="/all-foods" element={<Foods />} />
+        <Route path="/dashboard/*" element={<Dashboard />} />
+
+
+
+
+
+        <Route path="/menu" element={<FoodMenu />} />
+
       </Routes>
 
       <ToastContainer />

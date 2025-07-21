@@ -1,86 +1,117 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import axios from "axios";
-import Food from './Food';
+import { toast } from "react-toastify";
 
-
+import Food from "./Food";
+import Foods from "./Foods";
+import Cuisine from "./Cuisine";
 
 export default function Dashboard() {
     const [email, setEmail] = useState("");
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const navigate = useNavigate();
 
-    async function fetchUserData() {
-        const token = localStorage.getItem("token");
-        if (!token) {
-            console.log("No token found, redirecting to login.");
-            navigate("/login");
-            return;
-        }
-
-        try {
-            const response = await axios.get("http://127.0.0.1:8000/api/dashboard", {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                },
-            });
-            setEmail(response.data.user.email);
-        } catch (error) {
-            console.error("Error fetching user data:", error);
-            if (error.response && error.response.status === 401) {
-
-                alert("Session expired or unauthorized. Please login again.");
-            } else {
-
-                alert("Failed to fetch user data. Please try again.");
-            }
-            localStorage.removeItem("token");
-            navigate("/login");
-        }
-    }
-
     useEffect(() => {
+        const fetchUserData = async () => {
+            const token = localStorage.getItem("token");
+
+            if (!token) {
+                navigate("/login");
+                return;
+            }
+
+            try {
+                const response = await axios.get("http://127.0.0.1:8000/api/dashboard", {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+                setEmail(response.data.user.email);
+            } catch (err) {
+                toast.error("Unauthorized. Please login again.");
+                localStorage.removeItem("token");
+                navigate("/login");
+            }
+        };
+
         fetchUserData();
     }, [navigate]);
 
     const handleLogout = async () => {
         const token = localStorage.getItem("token");
-        if (!token) {
-            navigate("/login");
-            return;
-        }
-        try {
 
-            await axios.post("http://127.0.0.1:8000/api/logout", {}, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
+        try {
+            await axios.post(
+                "http://127.0.0.1:8000/api/logout",
+                {},
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
             localStorage.removeItem("token");
+            toast.success("Logged out!");
             navigate("/login");
-        } catch (error) {
-            console.error("Error logging out:", error);
-            alert("Logout failed, please try again.");
-            localStorage.removeItem("token");
-            navigate("/login");
+        } catch (err) {
+            toast.error("Logout failed.");
         }
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-green-100 to-blue-100 flex flex-col items-center justify-center p-4">
-            <div className="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md text-center">
-                <h2 className="text-3xl font-bold text-purple-700 mb-4">Welcome to Dashboard</h2>
-                <p className="text-gray-700 text-lg mb-6">You are logged in as <span className="font-semibold text-blue-600">{email || "Loading..."}</span></p>
-                <Food />
+        <div className="flex min-h-screen bg-gray-100">
+            {/* Sidebar */}
+            <aside
+                className={`w-64 bg-white shadow-md p-4 border-r fixed md:static z-50
+          transform transition-transform duration-300
+          ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}
+            >
+                <div className="text-2xl font-bold text-purple-700 mb-6">Admin Panel</div>
 
+                <nav className="space-y-3">
+                    <Link to="/dashboard" className="block hover:text-purple-600">
+                        Dashboard Home
+                    </Link>
+                    <Link to="/dashboard/add-food" className="block hover:text-purple-600">
+                        Add Food
+                    </Link>
+                    <Link to="/dashboard/all-foods" className="block hover:text-purple-600">
+                        All Foods
+                    </Link>
+                    <Link to="/dashboard/add-cuisine" className="block hover:text-purple-600">
+                        Add Cuisine
+                    </Link>
+                    <button
+                        onClick={handleLogout}
+                        className="mt-4 text-red-600 hover:text-red-700"
+                    >
+                        Logout
+                    </button>
+                </nav>
 
+                <p className="text-sm text-gray-500 mt-4">Logged in as: {email}</p>
+            </aside>
 
+            {/* Main Content */}
+            <div className="flex-1 flex flex-col">
+                {/* Mobile header */}
+                <header className="md:hidden bg-white p-4 shadow flex justify-between items-center">
+                    <h1 className="text-xl font-semibold text-purple-700">Dashboard</h1>
+                    <button
+                        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                        className="p-2 bg-purple-100 rounded-md"
+                    >
+                        <i className="fas fa-bars"></i>
+                    </button>
+                </header>
 
-                <button
-                    onClick={handleLogout}
-                    className="mt-8 w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg font-semibold transition duration-300 shadow-md"
-                >
-                    Logout
-                </button>
+                {/* Page content */}
+                <main className="p-6">
+                    <Routes>
+                        <Route
+                            index
+                            element={<h2 className="text-2xl font-bold">Welcome, {email}!</h2>}
+                        />
+                        <Route path="add-food" element={<Food />} />
+                        <Route path="all-foods" element={<Foods />} />
+                        <Route path="add-cuisine" element={<Cuisine />} />
+                    </Routes>
+                </main>
             </div>
         </div>
     );

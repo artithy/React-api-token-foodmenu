@@ -97,49 +97,98 @@ export default function Food() {
     };
 
     return (
-        <>
-            <h2>Add Food</h2>
-            <form onSubmit={handleSubmit}>
-                <input type="text" placeholder="Food Name" value={name} onChange={(e) => setName(e.target.value)} />
-                <br />
+        <div className="max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-lg mt-10">
+            <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">🍽️ Add New Food</h2>
+            <form onSubmit={handleSubmit} className="space-y-4">
+                <input
+                    type="text"
+                    placeholder="Food Name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                />
 
-                <textarea placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} />
-                <br />
+                <textarea
+                    placeholder="Description"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                />
 
-                <select value={cuisine_id} onChange={(e) => setCuisineId(e.target.value)}>
+                <select
+                    value={cuisine_id}
+                    onChange={(e) => setCuisineId(e.target.value)}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                >
                     <option value="">Select Cuisine</option>
                     {cuisines.map((cuisine) => (
                         <option key={cuisine.id} value={cuisine.id}>{cuisine.name}</option>
                     ))}
                 </select>
-                <br />
 
-                <input type="number" placeholder="Price" value={price} onChange={(e) => setPrice(e.target.value)} />
-                <br />
+                <input
+                    type="number"
+                    placeholder="Price"
+                    value={price}
+                    onChange={(e) => setPrice(e.target.value)}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                />
 
-                <input type="number" placeholder="Discount Price" value={discount_price} onChange={(e) => setDiscountPrice(e.target.value)} />
-                <br />
+                <input
+                    type="number"
+                    placeholder="Discount Price"
+                    value={discount_price}
+                    onChange={(e) => setDiscountPrice(e.target.value)}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                />
 
-                <input type="number" placeholder="VAT Percentage" value={vat_percentage} onChange={(e) => setVatPercentage(e.target.value)} />
-                <br />
+                <input
+                    type="number"
+                    placeholder="VAT Percentage"
+                    value={vat_percentage}
+                    onChange={(e) => setVatPercentage(e.target.value)}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                />
 
-                <input type="number" placeholder="Stock Quantity" value={stock_quantity} onChange={(e) => setStockQuantity(e.target.value)} />
-                <br />
+                <input
+                    type="number"
+                    placeholder="Stock Quantity"
+                    value={stock_quantity}
+                    onChange={(e) => setStockQuantity(e.target.value)}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                />
 
-                <input type="file" name="image" onChange={handleImageChange} />
-                <br />
+                <input
+                    type="file"
+                    name="image"
+                    onChange={handleImageChange}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-50"
+                />
 
-                <input type="text" placeholder="Date (optional)" value={date} onChange={(e) => setDate(e.target.value)} />
-                <br />
+                <input
+                    type="text"
+                    placeholder="Date (optional)"
+                    value={date}
+                    onChange={(e) => setDate(e.target.value)}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                />
 
-                <select value={status} onChange={(e) => setStatus(e.target.value)}>
+                <select
+                    value={status}
+                    onChange={(e) => setStatus(e.target.value)}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                >
                     <option value="active">Active</option>
                     <option value="inactive">Inactive</option>
                 </select>
-                <br />
 
-                <button type="submit">Add Food</button>
+                <button
+                    type="submit"
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md transition duration-200"
+                >
+                    ➕ Add Food
+                </button>
             </form>
-        </>
+        </div>
     );
 }
