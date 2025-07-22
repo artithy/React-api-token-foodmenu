@@ -8,6 +8,7 @@ import Food from './components/Food';
 import Cuisine from './components/Cuisine';
 import Foods from './components/Foods';
 import FoodMenu from './components/FoodMenu';
+import OrderPage from './components/OrderPage';
 import { ToastContainer, toast } from 'react-toastify';
 
 function App() {
@@ -25,6 +26,8 @@ function App() {
         <Route path="/add-cuisine" element={<Cuisine />} />
         <Route path="/all-foods" element={<Foods />} />
         <Route path="/dashboard/*" element={<Dashboard />} />
+        <Route path="/order" element={<OrderPage />} />
+
 
 
 
