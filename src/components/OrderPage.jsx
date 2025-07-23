@@ -20,23 +20,17 @@ export default function OrderPage() {
     useEffect(() => {
         if (!cartItems || cartItems.length === 0) {
             toast.info("Your cart is empty. Please add items before checking out.");
-            navigate('/food-menu');
+            navigate('/menu');
         }
     }, [cartItems, navigate]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-
-        setCustomerDetails(prev => {
-            return {
-                name: name === 'name' ? value : prev.name,
-                address: name === 'address' ? value : prev.address,
-                phone: name === 'phone' ? value : prev.phone,
-                orderNotes: name === 'orderNotes' ? value : prev.orderNotes
-            };
-        });
+        setCustomerDetails(prev => ({
+            ...prev,
+            [name]: value
+        }));
     };
-
 
     const handlePlaceOrder = async (e) => {
         e.preventDefault();
@@ -54,27 +48,29 @@ export default function OrderPage() {
             delivery_address: customerDetails.address,
             phone_number: customerDetails.phone,
             order_notes: customerDetails.orderNotes,
+            // Make sure to include food_name and image for the order_details snapshot
             items: cartItems.map(item => ({
                 food_id: item.food_id,
+                food_name: item.food_name, // <-- Added this
                 quantity: item.quantity,
                 price_at_order: item.price,
+                image: item.image, // <-- Added this
             })),
             total_amount: total,
             payment_method: 'Cash on Delivery',
         };
 
         try {
-
             const response = await axios.post("http://127.0.0.1:8000/api/place-order", orderData);
 
             if (response.data.success) {
                 toast.success(response.data.message || "Order placed successfully!");
                 localStorage.removeItem("guest_cart_token");
-                navigate('/order-confirmation', {
+                navigate('/place-order', {
                     state: {
                         orderId: response.data.order_id,
                         customerDetails: customerDetails,
-                        orderItems: cartItems,
+                        orderItems: cartItems, // Still sending cartItems as current order items
                         finalTotal: total
                     }
                 });
@@ -85,6 +81,13 @@ export default function OrderPage() {
             console.error("Error placing order:", error);
             if (error.response && error.response.data && error.response.data.message) {
                 toast.error(error.response.data.message);
+            } else if (error.response && error.response.data && error.response.data.errors) {
+                const errors = error.response.data.errors;
+                let errorMessage = "Validation errors: \n";
+                for (const key in errors) {
+                    errorMessage += `${errors[key].join(', ')}\n`;
+                }
+                toast.error(errorMessage);
             } else {
                 toast.error("An error occurred while placing your order.");
             }

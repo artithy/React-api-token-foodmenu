@@ -12,7 +12,6 @@ export default function Registration() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-
         setEmailError("");
         setGeneralError("");
 
@@ -57,9 +56,9 @@ export default function Registration() {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-100 to-purple-200 flex items-center justify-center px-4">
+        <div className="min-h-screen bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center px-4">
             <div className="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md">
-                <h2 className="text-3xl font-bold text-center text-purple-700 mb-6">
+                <h2 className="text-3xl font-bold text-center text-blue-700 mb-6">
                     Create an Account
                 </h2>
                 <form onSubmit={handleSubmit} className="space-y-4">
@@ -69,10 +68,9 @@ export default function Registration() {
                         placeholder="Enter your username"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                         required
                     />
-
 
                     <div>
                         <input
@@ -83,7 +81,7 @@ export default function Registration() {
                                 setEmail(e.target.value);
                                 setEmailError("");
                             }}
-                            className={`w-full px-4 py-2 border ${emailError ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 ${emailError ? 'focus:ring-red-400' : 'focus:ring-purple-400'}`}
+                            className={`w-full px-4 py-2 border ${emailError ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 ${emailError ? 'focus:ring-red-400' : 'focus:ring-blue-400'}`}
                             required
                         />
                         {emailError && (
@@ -91,13 +89,12 @@ export default function Registration() {
                         )}
                     </div>
 
-
                     <input
                         type="password"
                         placeholder="Enter your password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                         required
                     />
 
@@ -107,14 +104,14 @@ export default function Registration() {
 
                     <button
                         type="submit"
-                        className="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-lg font-semibold transition duration-300"
+                        className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-semibold transition duration-300"
                     >
                         Register
                     </button>
                 </form>
                 <p className="text-center text-gray-600 mt-4">
                     Already registered?{" "}
-                    <Link to="/login" className="text-purple-600 hover:underline font-medium">
+                    <Link to="/login" className="text-blue-600 hover:underline font-medium">
                         Login
                     </Link>
                 </p>
