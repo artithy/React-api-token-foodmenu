@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { Link, Route, Routes, useNavigate } from "react-router-dom";
-import axios from "axios";
-import { toast } from "react-toastify";
-
+import { Link, Routes, Route, useNavigate } from "react-router-dom";
 import Food from "./Food";
 import Foods from "./Foods";
 import Cuisine from "./Cuisine";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 export default function Dashboard() {
     const [email, setEmail] = useState("");
@@ -57,7 +56,7 @@ export default function Dashboard() {
         <div className="flex min-h-screen bg-gray-100">
             {/* Sidebar */}
             <aside
-                className={`w-64 bg-white shadow-md p-4 border-r fixed md:static z-50
+                className={`w-64 bg-white shadow-md p-4 border-r fixed top-0 left-0 h-full z-50
           transform transition-transform duration-300
           ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}
             >
@@ -88,7 +87,7 @@ export default function Dashboard() {
             </aside>
 
             {/* Main Content */}
-            <div className="flex-1 flex flex-col">
+            <div className="flex-1 flex flex-col ml-64"> {/* ml-64 to avoid sidebar overlap */}
                 {/* Mobile header */}
                 <header className="md:hidden bg-white p-4 shadow flex justify-between items-center">
                     <h1 className="text-xl font-semibold text-purple-700">Dashboard</h1>
@@ -100,9 +99,10 @@ export default function Dashboard() {
                     </button>
                 </header>
 
-                {/* Page content */}
+                {/* Nested Routes Content */}
                 <main className="p-6">
                     <Routes>
+                        {/* index route /dashboard */}
                         <Route
                             index
                             element={<h2 className="text-2xl font-bold">Welcome, {email}!</h2>}

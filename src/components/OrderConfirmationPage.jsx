@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
@@ -9,20 +9,20 @@ export default function OrderConfirmationPage() {
     const navigate = useNavigate();
 
     const { orderId, customerDetails, orderItems, finalTotal } = location.state || {};
+    const [toastShown, setToastShown] = useState(false);
 
     useEffect(() => {
-        // যদি orderId না থাকে (যেমন কেউ সরাসরি /place-order এ চলে আসে),
-        // তাহলে একটি মেসেজ দেখিয়ে মেনুতে পাঠিয়ে দিন।
-        if (!orderId) {
+        if (orderId && !toastShown) {
+            toast.success("Order placed successfully!");
+            setToastShown(true);
+            localStorage.removeItem("guest_cart_token");
+        } else if (!orderId) {
             toast.info("No order details found. Redirecting to menu.");
             navigate('/menu', { replace: true });
-        } else {
-            // অর্ডার সফল হলে guest_cart_token সরিয়ে দিন
-            localStorage.removeItem("guest_cart_token");
         }
-    }, [orderId, navigate]); // orderId এবং navigate dependencies হিসেবে
+    }, [orderId, navigate, toastShown]);
 
-    // যদি orderId না থাকে, তাহলে একটি সিম্পল লোডিং বা রিডাইরেকশন মেসেজ দেখান
+
     if (!orderId) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -31,7 +31,7 @@ export default function OrderConfirmationPage() {
         );
     }
 
-    // অর্ডার নিশ্চিত হলে এই অংশটি রেন্ডার হবে
+
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col items-center py-10 px-4 font-sans">
             <div className="bg-white rounded-lg shadow-lg p-6 md:p-8 w-full max-w-2xl text-center">
@@ -48,22 +48,22 @@ export default function OrderConfirmationPage() {
                         </div>
                         <div>
                             <p className="font-medium">Total Amount:</p>
-                            {/* parseFloat দিয়ে নিশ্চিত করা হয়েছে যাতে সংখ্যা হিসেবে বিবেচিত হয় */}
+
                             <p className="text-lg font-bold text-green-600">${parseFloat(finalTotal).toFixed(2)}</p>
                         </div>
                         <div className="col-span-1 md:col-span-2">
                             <p className="font-medium">Customer Name:</p>
-                            <p>{customerDetails.name}</p> {/* ধরে নেওয়া হয়েছে customerDetails.name সবসময় থাকবে */}
+                            <p>{customerDetails.name}</p>
                         </div>
                         <div className="col-span-1 md:col-span-2">
                             <p className="font-medium">Delivery Address:</p>
-                            <p>{customerDetails.address}</p> {/* ধরে নেওয়া হয়েছে customerDetails.address সবসময় থাকবে */}
+                            <p>{customerDetails.address}</p>
                         </div>
                         <div className="col-span-1 md:col-span-2">
                             <p className="font-medium">Phone Number:</p>
-                            <p>{customerDetails.phone}</p> {/* ধরে নেওয়া হয়েছে customerDetails.phone সবসময় থাকবে */}
+                            <p>{customerDetails.phone}</p>
                         </div>
-                        {customerDetails.orderNotes && ( // যদি orderNotes থাকে তবেই দেখাও
+                        {customerDetails.orderNotes && (
                             <div className="col-span-1 md:col-span-2">
                                 <p className="font-medium">Order Notes:</p>
                                 <p className="italic text-sm">{customerDetails.orderNotes}</p>
@@ -75,7 +75,7 @@ export default function OrderConfirmationPage() {
                 <section className="mb-8 p-4 bg-gray-50 rounded-md border border-gray-200 text-left">
                     <h2 className="text-2xl font-semibold text-gray-700 mb-4 border-b pb-2">Items Ordered</h2>
                     <div className="space-y-3 max-h-72 overflow-y-auto pr-2">
-                        {orderItems && orderItems.map((item) => ( // orderItems আছে কিনা চেক করা হয়েছে
+                        {orderItems && orderItems.map((item) => (
                             <div key={item.food_id} className="flex items-center justify-between bg-white p-3 rounded-md shadow-sm">
                                 <div className="flex items-center space-x-3 flex-grow">
                                     <img

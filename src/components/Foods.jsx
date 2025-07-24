@@ -92,28 +92,31 @@ export default function Foods() {
     };
 
     return (
-        <div className="max-w-7xl mx-auto px-4 py-8">
+
+        <div className="max-w-7xl mx-auto px-4 py-8 overflow-x-hidden">
             <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">🍕 Food List</h2>
-            <div className="overflow-x-auto bg-white rounded-lg shadow-md">
-                <table className="min-w-full divide-y divide-gray-200">
-                    <thead className="bg-blue-600 text-white text-sm">
+
+            <div className="w-full overflow-auto bg-white rounded-lg shadow-md">
+                <table className="min-w-[1200px] w-full text-sm divide-y divide-gray-200">
+                    <thead className="bg-blue-600 text-white">
                         <tr>
-                            <th className="px-4 py-3">Image</th>
-                            <th className="px-4 py-3">Name</th>
-                            <th className="px-4 py-3">Description</th>
-                            <th className="px-4 py-3">Cuisine</th>
-                            <th className="px-4 py-3">Price</th>
-                            <th className="px-4 py-3">Discount</th>
-                            <th className="px-4 py-3">VAT %</th>
-                            <th className="px-4 py-3">Sell Price</th>
-                            <th className="px-4 py-3">Stock</th>
-                            <th className="px-4 py-3">Created</th>
-                            <th className="px-4 py-3">Status</th>
-                            <th className="px-4 py-3">Edit</th>
-                            <th className="px-4 py-3">Delete</th>
+                            <th className="px-4 py-3 text-left">Image</th>
+                            <th className="px-4 py-3 text-left">Name</th>
+                            <th className="px-4 py-3 text-left">Description</th>
+                            <th className="px-4 py-3 text-left">Cuisine</th>
+                            <th className="px-4 py-3 text-left">Price</th>
+                            <th className="px-4 py-3 text-left">Discount</th>
+                            <th className="px-4 py-3 text-left">VAT %</th>
+                            <th className="px-4 py-3 text-left">Sell Price</th>
+                            <th className="px-4 py-3 text-left">Stock</th>
+                            <th className="px-4 py-3 text-left">Created</th>
+                            <th className="px-4 py-3 text-left">Status</th>
+                            <th className="px-4 py-3 text-left">Edit</th>
+                            <th className="px-4 py-3 text-left">Delete</th>
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-100 text-sm">
+
+                    <tbody className="divide-y divide-gray-100">
                         {foods.map((food, index) => {
                             const sellingPrice = (
                                 parseFloat(food.discount_price) +
@@ -216,11 +219,10 @@ export default function Foods() {
                                     <td className="px-4 py-3">{moment(food.created_at).format("YYYY-MM-DD")}</td>
                                     <td className="px-4 py-3">
                                         <button
-                                            type="button"
                                             onClick={() => handleToggleStatus(food.id)}
                                             className={`px-3 py-1 rounded text-xs font-semibold uppercase ${food.status === "active"
-                                                    ? "bg-green-500 hover:bg-green-600 text-white"
-                                                    : "bg-red-500 hover:bg-red-600 text-white"
+                                                ? "bg-green-500 hover:bg-green-600 text-white"
+                                                : "bg-red-500 hover:bg-red-600 text-white"
                                                 }`}
                                         >
                                             {food.status === "active" ? "ACTIVE" : "BLOCK"}
@@ -244,7 +246,6 @@ export default function Foods() {
                                             </>
                                         ) : (
                                             <button
-                                                type="button"
                                                 className="text-xs bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded"
                                                 onClick={() => startEdit(food)}
                                             >
@@ -254,7 +255,6 @@ export default function Foods() {
                                     </td>
                                     <td className="px-4 py-3 text-center">
                                         <button
-                                            type="button"
                                             className="text-xs bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded"
                                             onClick={() => handleDelete(food.id)}
                                         >
@@ -269,4 +269,5 @@ export default function Foods() {
             </div>
         </div>
     );
+
 }
